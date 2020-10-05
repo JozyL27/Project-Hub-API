@@ -1,3 +1,20 @@
 type Query {
   greeting: String
+  lists: [List]
+  list(id: ID!): List
+}
+
+type Mutation {
+  createList(input: CreateListInput): List
+}
+
+type List {
+  id: ID!
+  title: String
+  author: String
+}
+
+input CreateListInput {
+  title: String
+  author: String
 }
