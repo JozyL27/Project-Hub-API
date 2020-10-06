@@ -12,7 +12,6 @@ type List {
   id: ID!
   title: String
   author: String
-  date_created: Int
 }
 
 input CreateListInput {

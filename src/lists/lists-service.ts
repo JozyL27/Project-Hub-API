@@ -1,6 +1,9 @@
 const ListsService = {
   getLists(db: any, id: string) {
-    return db("lists").select("*").where("author", id);
+    return db("lists")
+      .select("*")
+      .where("author", id)
+      .orderBy("date_created", "desc");
   },
   createList(db: any, newList: object) {
     return db("lists")
