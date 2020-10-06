@@ -1,6 +1,6 @@
 type Query {
   greeting: String
-  lists: [List]
+  lists(id: ID!): [List]
   list(id: ID!): List
 }
 
@@ -12,6 +12,7 @@ type List {
   id: ID!
   title: String
   author: String
+  date_created: Int
 }
 
 input CreateListInput {

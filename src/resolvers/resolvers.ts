@@ -1,25 +1,18 @@
-// import app from "../app";
-import knex from "knex";
-import config from "../config";
-const { DATABASE_URL } = config;
-const db = knex({
-  client: "pg",
-  connection: DATABASE_URL,
-});
+import app from "../app";
+import ListsService from "../lists/lists-service";
 
 const Query = {
   greeting: () => "hello world!",
+  lists: async (root: any, { id }: any) => {
+    const lists = await ListsService.getLists(app.get("db"), id);
+    return lists;
+  },
 };
 
 const Mutation = {
-  createList: (root: any, { input }: any) => {
-    console.log(input);
-    return db("lists")
-      .insert(input)
-      .returning("*")
-      .then((rows: any) => {
-        return rows[0];
-      });
+  createList: async (root: any, { input }: any) => {
+    const list = await ListsService.createList(app.get("db"), input);
+    return list;
   },
 };
 

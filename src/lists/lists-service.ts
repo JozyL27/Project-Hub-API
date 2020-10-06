@@ -1,6 +1,6 @@
 const ListsService = {
-  getLists(db: any, userId: string) {
-    return db("lists").select("*").where("author", userId);
+  getLists(db: any, id: string) {
+    return db("lists").select("*").where("author", id);
   },
   createList(db: any, newList: object) {
     return db("lists")
