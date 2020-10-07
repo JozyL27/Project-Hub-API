@@ -13,6 +13,9 @@ const ListsService = {
         return rows[0];
       });
   },
+  getListById(db: any, id: string) {
+    return db("lists").select("*").where("id", id);
+  },
 };
 
 export default ListsService;

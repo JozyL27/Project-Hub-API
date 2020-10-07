@@ -14,6 +14,18 @@ const Query = {
       throw new Error(error);
     }
   },
+  list: async (root: any, { id }: any, context: any) => {
+    const { app } = context.req;
+    try {
+      const list = await ListsService.getListById(app.get("db"), id);
+      if (list.length < 1) {
+        throw new Error("No list was found");
+      }
+      return list[0];
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
 
 const Mutation = {
