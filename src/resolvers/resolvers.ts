@@ -1,4 +1,5 @@
 import ListsService from "../lists/lists-service";
+import ProjectsService from "../projects/projects-service";
 
 const Query = {
   greeting: () => "hello world!",
@@ -32,12 +33,59 @@ const Mutation = {
   createList: async (root: any, { input }: any, context: any) => {
     const { app } = context.req;
     try {
+      const { title, author } = input;
+      for (const field of ["title", "author"]) {
+        if (!input[field]) {
+          throw new Error(`missing ${field} in request body.`);
+        }
+      }
+      if (title.length < 4) {
+        throw new Error("title must contain at least 4 characters.");
+      }
+      if (title.length > 20) {
+        throw new Error("title cannot be longer than 20 characters.");
+      }
+      if (author.length < 1) {
+        throw new Error("list must contain an author.");
+      }
       const list = await ListsService.createList(app.get("db"), input);
       return list;
     } catch (error) {
       throw new Error(error);
     }
   },
+  createProject: async (root: any, { input }: any, context: any) => {
+    const { app } = context.req;
+    try {
+      const { title, list_id } = input;
+      for (const field of ["title", "list_id"]) {
+        if (!input[field]) {
+          throw new Error(`missing ${field} in request body.`);
+        }
+        if (title.length < 4) {
+          throw new Error("title must contain at least 4 characters.");
+        }
+        if (title.length > 20) {
+          throw new Error("title cannot be longer than 20 characters.");
+        }
+        const list = await ListsService.getListById(app.get("db"), list_id);
+        if (list.length < 1) {
+          throw new Error("No list was found");
+        }
+        const project = await ProjectsService.createProject(
+          app.get("db"),
+          input
+        );
+        return project;
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
+
+// const List = {
+//   project: (list: any) =>
+// }
 
 export { Query, Mutation };
