@@ -84,8 +84,19 @@ const Mutation = {
   },
 };
 
-// const List = {
-//   project: (list: any) =>
-// }
+const List = {
+  projects: async (root: any, list: any, context: any) => {
+    const { app } = context.req;
+    try {
+      const projects = await ProjectsService.getProjectsByListId(
+        app.get("db"),
+        root.id
+      );
+      return projects;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+};
 
-export { Query, Mutation };
+export { Query, Mutation, List };
