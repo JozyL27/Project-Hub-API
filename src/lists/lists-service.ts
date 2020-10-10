@@ -14,7 +14,7 @@ const ListsService = {
       });
   },
   getListById(db: any, id: string) {
-    return db("lists").select("*").where("id", id);
+    return db("lists").select("*").where("id", id).first();
   },
 };
 

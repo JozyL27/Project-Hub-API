@@ -22,7 +22,32 @@ const Query = {
       if (list.length < 1) {
         throw new Error("No list was found");
       }
-      return list[0];
+      return list;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  projects: async (root: any, { id }: any, context: any) => {
+    const { app } = context.req;
+    try {
+      const projects = await ProjectsService.getProjectsByListId(
+        app.get("db"),
+        id
+      );
+      if (projects.length < 1) {
+        throw new Error(`You have no projects in this list.`);
+      }
+      return projects;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  project: async (root: object, { id }: any, context: any) => {
+    const { app } = context.req;
+    try {
+      const project = ProjectsService.getProjectById(app.get("db"), id);
+      console.log(project);
+      return project;
     } catch (error) {
       throw new Error(error);
     }

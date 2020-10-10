@@ -13,6 +13,9 @@ const ProjectsService = {
       .where("list_id", listId)
       .orderBy("date_created", "desc");
   },
+  getProjectById(db: Function, projectId: string) {
+    return db("projects").select("*").where("id", projectId).first();
+  },
 };
 
 export default ProjectsService;
