@@ -2,7 +2,7 @@ type Query {
   greeting: String
   lists(id: ID!, page: Int): [List]
   list(id: ID!): List
-  projects(id: ID!): [Project]
+  projects(id: ID!, page: Int): [Project]
   project(id: ID!): Project
 }
 
@@ -12,6 +12,7 @@ type Mutation {
   deleteList(id: ID!): String
   createProject(input: CreateProjectInput): Project
   updateProject(input: CreateProjectInput, id: ID!): Project
+  deleteProject(id: ID!): String
 }
 
 type List {
