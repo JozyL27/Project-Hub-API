@@ -1,6 +1,6 @@
 type Query {
   greeting: String
-  lists(id: ID!): [List]
+  lists(id: ID!, page: Int): [List]
   list(id: ID!): List
   projects(id: ID!): [Project]
   project(id: ID!): Project
@@ -8,7 +8,10 @@ type Query {
 
 type Mutation {
   createList(input: CreateListInput): List
+  updateList(input: CreateListInput, id: ID!): List
+  deleteList(id: ID!): String
   createProject(input: CreateProjectInput): Project
+  updateProject(input: CreateProjectInput, id: ID!): Project
 }
 
 type List {

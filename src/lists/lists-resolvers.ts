@@ -2,11 +2,11 @@ import ListsService from "../lists/lists-service";
 import ProjectsService from "../projects/projects-service";
 
 const listQueries = {
-  lists: async (root: any, { id }: any, context: any) => {
+  lists: async (root: any, { id, page }: any, context: any) => {
     const { app } = context.req;
     try {
-      const lists = await ListsService.getLists(app.get("db"), id);
-      if (lists.length < 1) {
+      const lists = await ListsService.getLists(app.get("db"), id, page);
+      if (!lists) {
         throw new Error("You have no lists.");
       }
       return lists;
@@ -18,7 +18,7 @@ const listQueries = {
     const { app } = context.req;
     try {
       const list = await ListsService.getListById(app.get("db"), id);
-      if (list.length < 1) {
+      if (!list) {
         throw new Error("No list was found");
       }
       return list;
@@ -49,6 +49,32 @@ const listMutations = {
       }
       const list = await ListsService.createList(app.get("db"), input);
       return list;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  updateList: async (root: any, { input, id }: any, context: any) => {
+    const { app } = context.req;
+    try {
+      const listExists = await ListsService.getListById(app.get("db"), id);
+      if (!listExists) {
+        throw new Error(`The list you're trying to update does not exist.`);
+      }
+      const list = await ListsService.updateList(app.get("db"), id, input);
+      return list;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  deleteList: async (root: any, { id }: any, context: any) => {
+    const { app } = context.req;
+    try {
+      const listExists = await ListsService.getListById(app.get("db"), id);
+      if (!listExists) {
+        throw new Error(`The list you're trying to delete does not exist.`);
+      }
+      await ListsService.deleteList(app.get("db"), id);
+      return "List was successfully deleted.";
     } catch (error) {
       throw new Error(error);
     }
